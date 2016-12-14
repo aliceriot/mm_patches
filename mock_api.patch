@@ -1,0 +1,105 @@
+diff --git a/static/js/constants.js b/static/js/constants.js
+index aac9ccc..1d7c0b3 100644
+--- a/static/js/constants.js
++++ b/static/js/constants.js
+@@ -621,8 +621,12 @@ export const DASHBOARD_RESPONSE = deepFreeze([
+         "prerequisites": ""
+       },
+     ],
+-    "financial_aid_availability": false,
+-    "id": 6
++    "financial_aid_availability": true,
++    "id": 6,
++    "financial_aid_user_info": {
++      "max_possible_cost": 1000,
++      "min_possible_cost": 100,
++    }
+   },
+ ]);
+ 
+diff --git a/static/js/lib/api.js b/static/js/lib/api.js
+index a3d4e0e..d2e921b 100644
+--- a/static/js/lib/api.js
++++ b/static/js/lib/api.js
+@@ -9,6 +9,12 @@ import type { CheckoutResponse } from '../flow/checkoutTypes';
+ import type { Dashboard } from '../flow/dashboardTypes';
+ import type { AvailableProgram, AvailablePrograms } from '../flow/enrollmentTypes';
+ import type { EmailSendResponse } from '../flow/emailTypes';
++import {
++  DASHBOARD_RESPONSE,
++  PROGRAMS,
++  COURSE_PRICES_RESPONSE,
++  USER_PROGRAM_RESPONSE,
++} from '../constants';
+ 
+ export function getCookie(name: string): string|null {
+   let cookieValue = null;
+@@ -151,15 +157,21 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
+ }
+ 
+ export function getDashboard(): Promise<Dashboard> {
+-  return mockableFetchJSONWithCSRF('/api/v0/dashboard/', {}, true);
++  // return mockableFetchJSONWithCSRF('/api/v0/dashboard/', {}, true);
++  return Promise.resolve(DASHBOARD_RESPONSE);
+ }
+ 
+ export function checkout(courseId: string): Promise<CheckoutResponse> {
+-  return mockableFetchJSONWithCSRF('/api/v0/checkout/', {
+-    method: 'POST',
+-    body: JSON.stringify({
+-      course_id: courseId
+-    })
++  // return mockableFetchJSONWithCSRF('/api/v0/checkout/', {
++  //   method: 'POST',
++  //   body: JSON.stringify({
++  //     course_id: courseId
++  //   })
++  // });
++  return new Promise(resolve => {
++    setTimeout(() => {
++      resolve();
++    }, 1000);
+   });
+ }
+ 
+@@ -175,7 +187,8 @@ export function sendSearchResultMail(subject: string, body: string, searchReques
+ }
+ 
+ export function getPrograms(): Promise<AvailablePrograms> {
+-  return mockableFetchJSONWithCSRF('/api/v0/programs/', {}, true);
++  // return mockableFetchJSONWithCSRF('/api/v0/programs/', {}, true);
++  return Promise.resolve(PROGRAMS);
+ }
+ 
+ export function addProgramEnrollment(programId: number): Promise<AvailableProgram> {
+@@ -200,18 +213,22 @@ export function updateProfileImage(username: string, image: Blob, name: string):
+ }
+ 
+ export function addFinancialAid(income: number, currency: string, programId: number): Promise<*> {
+-  return mockableFetchJSONWithCSRF('/api/v0/financial_aid_request/', {
+-    method: 'POST',
+-    body: JSON.stringify({
+-      original_income: income,
+-      original_currency: currency,
+-      program_id: programId
+-    })
++  // return mockableFetchJSONWithCSRF('/api/v0/financial_aid_request/', {
++  //   method: 'POST',
++  //   body: JSON.stringify({
++  //     original_income: income,
++  //     original_currency: currency,
++  //     program_id: programId
++  //   })
++  // });
++  return new Promise(resolve => {
++    setTimeout(resolve, 1000);
+   });
+ }
+ 
+ export function getCoursePrices(): Promise<*> {
+-  return mockableFetchJSONWithCSRF('/api/v0/course_prices/', {});
++  // return mockableFetchJSONWithCSRF('/api/v0/course_prices/', {});
++  return Promise.resolve(COURSE_PRICES_RESPONSE);
+ }
+ 
+ export function skipFinancialAid(programId: number): Promise<*> {
