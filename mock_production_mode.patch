@@ -1,8 +1,16 @@
 diff --git a/docker-compose.yml b/docker-compose.yml
-index db2cdcd..5f0143e 100644
+index db2cdcd..5873fef 100644
 --- a/docker-compose.yml
 +++ b/docker-compose.yml
-@@ -38,19 +38,20 @@ services:
+@@ -25,7 +25,6 @@ services:
+       - "8079:8079"
+     links:
+       - web
+-      - watch
+ 
+   web:
+     build: .
+@@ -38,19 +37,20 @@ services:
        - .:/src
        - django_media:/var/media
      environment:
@@ -26,12 +34,12 @@ index db2cdcd..5f0143e 100644
      env_file: .env
      ports:
        - "8077:8077"
-@@ -65,14 +66,14 @@ services:
+@@ -65,14 +65,14 @@ services:
        dockerfile: Dockerfile-node
      working_dir: /src
      command: >
 -      /bin/bash -c './webpack_dev_server.sh --install'
-+      /bin/bash -c './webpack_if_prod.sh'
++      yarn install
      ports:
        - "8078:8078"
      volumes:
