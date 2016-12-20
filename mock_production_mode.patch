@@ -1,10 +1,13 @@
 diff --git a/docker-compose.yml b/docker-compose.yml
-index db2cdcd..261ecd6 100644
+index db2cdcd..fc30634 100644
 --- a/docker-compose.yml
 +++ b/docker-compose.yml
-@@ -40,11 +40,11 @@ services:
+@@ -38,19 +38,20 @@ services:
+       - .:/src
+       - django_media:/var/media
      environment:
-       DEBUG: 'True'
+-      DEBUG: 'True'
++      DEBUG: 'False'
        DEV_ENV: 'True'
 -      NODE_ENV: 'development'
 +      NODE_ENV: 'production'
@@ -16,7 +19,14 @@ index db2cdcd..261ecd6 100644
        MICROMASTERS_SECURE_SSL_REDIRECT: 'False'
        MICROMASTERS_DB_DISABLE_SSL: 'True'
        ELASTICSEARCH_URL: elastic:9200
-@@ -72,7 +72,7 @@ services:
+       CELERY_ALWAYS_EAGER: 'False'
+       BROKER_URL: redis://redis:6379/4
+       CELERY_RESULT_BACKEND: redis://redis:6379/4
++      ALLOWED_HOSTS: '["localhost"]'
+     env_file: .env
+     ports:
+       - "8077:8077"
+@@ -72,7 +73,7 @@ services:
        - .:/src
        - yarn-cache:/home/mitodl/.cache/yarn
      environment:
