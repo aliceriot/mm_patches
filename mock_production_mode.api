@@ -1,0 +1,27 @@
+diff --git a/docker-compose.yml b/docker-compose.yml
+index db2cdcd..261ecd6 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -40,11 +40,11 @@ services:
+     environment:
+       DEBUG: 'True'
+       DEV_ENV: 'True'
+-      NODE_ENV: 'development'
++      NODE_ENV: 'production'
+       PORT: 8077
+       COVERAGE_DIR: htmlcov
+       DATABASE_URL: postgres://postgres@db:5432/postgres
+-      MICROMASTERS_USE_WEBPACK_DEV_SERVER: 'True'
++      MICROMASTERS_USE_WEBPACK_DEV_SERVER: 'False'
+       MICROMASTERS_SECURE_SSL_REDIRECT: 'False'
+       MICROMASTERS_DB_DISABLE_SSL: 'True'
+       ELASTICSEARCH_URL: elastic:9200
+@@ -72,7 +72,7 @@ services:
+       - .:/src
+       - yarn-cache:/home/mitodl/.cache/yarn
+     environment:
+-      NODE_ENV: 'development'
++      NODE_ENV: 'production'
+     env_file: .env
+ 
+   celery:
