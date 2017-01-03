@@ -1,5 +1,5 @@
 diff --git a/static/js/constants.js b/static/js/constants.js
-index 25b3c0d4..2d67b2d1 100644
+index 25b3c0d4..7d152804 100644
 --- a/static/js/constants.js
 +++ b/static/js/constants.js
 @@ -657,8 +657,12 @@ export const DASHBOARD_RESPONSE = deepFreeze([
@@ -7,8 +7,9 @@ index 25b3c0d4..2d67b2d1 100644
        },
      ],
 -    "financial_aid_availability": false,
+-    "id": 6
 +    "financial_aid_availability": true,
-     "id": 6
++    "id": 6,
 +    "financial_aid_user_info": {
 +      "max_possible_cost": 1000,
 +      "min_possible_cost": 1000,
