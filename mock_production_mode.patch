@@ -1,5 +1,5 @@
 diff --git a/docker-compose.yml b/docker-compose.yml
-index db2cdcd..5873fef 100644
+index 992398de..bd4e1140 100644
 --- a/docker-compose.yml
 +++ b/docker-compose.yml
 @@ -25,7 +25,6 @@ services:
@@ -10,7 +10,7 @@ index db2cdcd..5873fef 100644
  
    web:
      build: .
-@@ -38,19 +37,20 @@ services:
+@@ -38,13 +37,13 @@ services:
        - .:/src
        - django_media:/var/media
      environment:
@@ -27,19 +27,20 @@ index db2cdcd..5873fef 100644
        MICROMASTERS_SECURE_SSL_REDIRECT: 'False'
        MICROMASTERS_DB_DISABLE_SSL: 'True'
        ELASTICSEARCH_URL: elastic:9200
-       CELERY_ALWAYS_EAGER: 'False'
-       BROKER_URL: redis://redis:6379/4
-       CELERY_RESULT_BACKEND: redis://redis:6379/4
+@@ -55,6 +54,7 @@ services:
+       EXAMS_SFTP_USERNAME: odl
+       EXAMS_SFTP_PASSWORD: 123
+       EXAMS_SFTP_UPLOAD_DIR: share
 +      ALLOWED_HOSTS: '["localhost"]'
+ 
      env_file: .env
      ports:
-       - "8077:8077"
-@@ -65,14 +65,14 @@ services:
+@@ -71,14 +71,14 @@ services:
        dockerfile: Dockerfile-node
      working_dir: /src
      command: >
 -      /bin/bash -c './webpack_dev_server.sh --install'
-+      yarn install
++      yarn install --pure-lockfile
      ports:
        - "8078:8078"
      volumes:
