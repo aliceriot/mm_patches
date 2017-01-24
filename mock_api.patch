@@ -1,8 +1,8 @@
 diff --git a/static/js/lib/api.js b/static/js/lib/api.js
-index a3d4e0ee..97b0cf28 100644
+index 65742744..b7190c46 100644
 --- a/static/js/lib/api.js
 +++ b/static/js/lib/api.js
-@@ -9,6 +9,12 @@ import type { CheckoutResponse } from '../flow/checkoutTypes';
+@@ -10,6 +10,12 @@ import type { Coupons } from '../flow/couponTypes';
  import type { Dashboard } from '../flow/dashboardTypes';
  import type { AvailableProgram, AvailablePrograms } from '../flow/enrollmentTypes';
  import type { EmailSendResponse } from '../flow/emailTypes';
@@ -15,7 +15,7 @@ index a3d4e0ee..97b0cf28 100644
  
  export function getCookie(name: string): string|null {
    let cookieValue = null;
-@@ -151,15 +157,21 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
+@@ -155,15 +161,21 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
  }
  
  export function getDashboard(): Promise<Dashboard> {
@@ -43,7 +43,7 @@ index a3d4e0ee..97b0cf28 100644
    });
  }
  
-@@ -175,7 +187,8 @@ export function sendSearchResultMail(subject: string, body: string, searchReques
+@@ -179,7 +191,8 @@ export function sendSearchResultMail(subject: string, body: string, searchReques
  }
  
  export function getPrograms(): Promise<AvailablePrograms> {
@@ -53,7 +53,7 @@ index a3d4e0ee..97b0cf28 100644
  }
  
  export function addProgramEnrollment(programId: number): Promise<AvailableProgram> {
-@@ -200,18 +213,22 @@ export function updateProfileImage(username: string, image: Blob, name: string):
+@@ -204,18 +217,22 @@ export function updateProfileImage(username: string, image: Blob, name: string):
  }
  
  export function addFinancialAid(income: number, currency: string, programId: number): Promise<*> {
@@ -85,10 +85,19 @@ index a3d4e0ee..97b0cf28 100644
  
  export function skipFinancialAid(programId: number): Promise<*> {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index 54471b30..3c5981c0 100644
+index 7bed5b06..48198576 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
-@@ -645,8 +645,12 @@ export const DASHBOARD_RESPONSE = deepFreeze([
+@@ -633,6 +633,8 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
+   {
+     "title": "Last program",
+     "description": "The last program",
++    "pearson_exam_status": "",
++
+     "courses": [
+       {
+         "id": 13,
+@@ -654,8 +656,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
          "prerequisites": ""
        },
      ],
