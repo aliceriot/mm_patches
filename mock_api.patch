@@ -1,8 +1,8 @@
 diff --git a/static/js/lib/api.js b/static/js/lib/api.js
-index 65742744..b7190c46 100644
+index 1cb70707..b87223f3 100644
 --- a/static/js/lib/api.js
 +++ b/static/js/lib/api.js
-@@ -10,6 +10,12 @@ import type { Coupons } from '../flow/couponTypes';
+@@ -11,6 +11,12 @@ import type { Coupons, AttachCouponResponse } from '../flow/couponTypes';
  import type { Dashboard } from '../flow/dashboardTypes';
  import type { AvailableProgram, AvailablePrograms } from '../flow/enrollmentTypes';
  import type { EmailSendResponse } from '../flow/emailTypes';
@@ -15,7 +15,7 @@ index 65742744..b7190c46 100644
  
  export function getCookie(name: string): string|null {
    let cookieValue = null;
-@@ -155,15 +161,21 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
+@@ -157,15 +163,21 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
  }
  
  export function getDashboard(): Promise<Dashboard> {
@@ -43,7 +43,7 @@ index 65742744..b7190c46 100644
    });
  }
  
-@@ -179,7 +191,8 @@ export function sendSearchResultMail(subject: string, body: string, searchReques
+@@ -191,7 +203,8 @@ export function sendCourseTeamMail(subject: string, body: string, courseId: numb
  }
  
  export function getPrograms(): Promise<AvailablePrograms> {
@@ -53,7 +53,7 @@ index 65742744..b7190c46 100644
  }
  
  export function addProgramEnrollment(programId: number): Promise<AvailableProgram> {
-@@ -204,18 +217,22 @@ export function updateProfileImage(username: string, image: Blob, name: string):
+@@ -216,24 +229,29 @@ export function updateProfileImage(username: string, image: Blob, name: string):
  }
  
  export function addFinancialAid(income: number, currency: string, programId: number): Promise<*> {
@@ -84,11 +84,21 @@ index 65742744..b7190c46 100644
  }
  
  export function skipFinancialAid(programId: number): Promise<*> {
+-  return fetchJSONWithCSRF(`/api/v0/financial_aid_skip/${programId}/`, {
+-    method: 'PATCH',
+-  });
++  // return fetchJSONWithCSRF(`/api/v0/financial_aid_skip/${programId}/`, {
++  //   method: 'PATCH',
++  // });
++  return Promise.reject();
+ }
+ export function updateDocumentSentDate(financialAidId: number, sentDate: string): Promise<*> {
+   return fetchJSONWithCSRF(`/api/v0/financial_aid/${financialAidId}/`, {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index 7bed5b06..aa9d08ca 100644
+index 9598829f..6479edea 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
-@@ -633,6 +633,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
+@@ -636,6 +636,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
    {
      "title": "Last program",
      "description": "The last program",
@@ -96,7 +106,7 @@ index 7bed5b06..aa9d08ca 100644
      "courses": [
        {
          "id": 13,
-@@ -654,8 +655,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
+@@ -657,8 +658,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
          "prerequisites": ""
        },
      ],
