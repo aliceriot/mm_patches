@@ -1,11 +1,19 @@
 diff --git a/static/js/lib/api.js b/static/js/lib/api.js
-index 1cb70707..b87223f3 100644
+index 15b3b51c..fd073740 100644
 --- a/static/js/lib/api.js
 +++ b/static/js/lib/api.js
-@@ -11,6 +11,12 @@ import type { Coupons, AttachCouponResponse } from '../flow/couponTypes';
- import type { Dashboard } from '../flow/dashboardTypes';
+@@ -4,7 +4,6 @@
+ import 'isomorphic-fetch';
+ import R from 'ramda';
+ import Decimal from 'decimal.js-light';
+-
+ import type { Profile, ProfileGetResult, ProfilePatchResult } from '../flow/profileTypes';
+ import type { CheckoutResponse } from '../flow/checkoutTypes';
+ import type { Coupons, AttachCouponResponse } from '../flow/couponTypes';
+@@ -12,6 +11,12 @@ import type { Dashboard, CoursePrices } from '../flow/dashboardTypes';
  import type { AvailableProgram, AvailablePrograms } from '../flow/enrollmentTypes';
  import type { EmailSendResponse } from '../flow/emailTypes';
+ import type { PearsonSSOParameters } from '../flow/pearsonTypes';
 +import {
 +  DASHBOARD_RESPONSE,
 +  PROGRAMS,
@@ -15,7 +23,7 @@ index 1cb70707..b87223f3 100644
  
  export function getCookie(name: string): string|null {
    let cookieValue = null;
-@@ -157,15 +163,21 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
+@@ -158,15 +163,21 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
  }
  
  export function getDashboard(): Promise<Dashboard> {
@@ -43,7 +51,7 @@ index 1cb70707..b87223f3 100644
    });
  }
  
-@@ -191,7 +203,8 @@ export function sendCourseTeamMail(subject: string, body: string, courseId: numb
+@@ -192,7 +203,8 @@ export function sendCourseTeamMail(subject: string, body: string, courseId: numb
  }
  
  export function getPrograms(): Promise<AvailablePrograms> {
@@ -53,7 +61,7 @@ index 1cb70707..b87223f3 100644
  }
  
  export function addProgramEnrollment(programId: number): Promise<AvailableProgram> {
-@@ -216,24 +229,29 @@ export function updateProfileImage(username: string, image: Blob, name: string):
+@@ -222,28 +234,34 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
  }
  
  export function addFinancialAid(income: number, currency: string, programId: number): Promise<*> {
@@ -77,9 +85,15 @@ index 1cb70707..b87223f3 100644
    });
  }
  
- export function getCoursePrices(): Promise<*> {
--  return fetchJSONWithCSRF('/api/v0/course_prices/', {});
-+  // return fetchJSONWithCSRF('/api/v0/course_prices/', {});
+ export function getCoursePrices(): Promise<CoursePrices> {
+-  return fetchJSONWithCSRF('/api/v0/course_prices/', {}).then(coursePrices => {
+-    // turn `price` from string into decimal
+-    return R.map(R.evolve({price: Decimal}), coursePrices);
+-  });
++  // return fetchJSONWithCSRF('/api/v0/course_prices/', {}).then(coursePrices => {
++  //   // turn `price` from string into decimal
++  //   return R.map(R.evolve({price: Decimal}), coursePrices);
++  // });
 +  return Promise.resolve(COURSE_PRICES_RESPONSE);
  }
  
@@ -92,32 +106,33 @@ index 1cb70707..b87223f3 100644
 +  // });
 +  return Promise.reject();
  }
++
  export function updateDocumentSentDate(financialAidId: number, sentDate: string): Promise<*> {
    return fetchJSONWithCSRF(`/api/v0/financial_aid/${financialAidId}/`, {
+     method: 'PATCH',
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index 9598829f..6479edea 100644
+index bc07de17..a4896e49 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
-@@ -636,6 +636,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
+@@ -636,7 +636,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
    {
      "title": "Last program",
      "description": "The last program",
+-    "pearson_exam_status": "",
 +    "pearson_exam_status": "in-progress",
      "courses": [
        {
          "id": 13,
-@@ -657,8 +658,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
-         "prerequisites": ""
-       },
-     ],
--    "financial_aid_availability": false,
--    "id": 6
-+    "financial_aid_availability": true,
-+    "id": 6,
+@@ -684,7 +684,11 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
+       }]
+     }],
+     "financial_aid_availability": true,
+-    "id": 7
++    "id": 7,
 +    "financial_aid_user_info": {
 +      "max_possible_cost": 1000,
 +      "min_possible_cost": 1000,
 +    }
    },
-   {
-     "title": "Paid but not enrolled",
+ ]);
+ 
