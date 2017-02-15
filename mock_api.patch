@@ -111,7 +111,7 @@ index 15b3b51c..fd073740 100644
    return fetchJSONWithCSRF(`/api/v0/financial_aid/${financialAidId}/`, {
      method: 'PATCH',
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index bc07de17..a4896e49 100644
+index bc07de17..deb985c4 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
 @@ -636,7 +636,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
@@ -123,16 +123,16 @@ index bc07de17..a4896e49 100644
      "courses": [
        {
          "id": 13,
-@@ -684,7 +684,11 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
-       }]
-     }],
-     "financial_aid_availability": true,
--    "id": 7
-+    "id": 7,
+@@ -659,7 +659,11 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
+       },
+     ],
+     "financial_aid_availability": false,
+-    "id": 6
++    "id": 6,
 +    "financial_aid_user_info": {
 +      "max_possible_cost": 1000,
 +      "min_possible_cost": 1000,
 +    }
    },
- ]);
- 
+   {
+     "title": "Paid but not enrolled",
