@@ -1,16 +1,8 @@
 diff --git a/static/js/lib/api.js b/static/js/lib/api.js
-index 15b3b51c..fd073740 100644
+index d8d6b93c..de0ca300 100644
 --- a/static/js/lib/api.js
 +++ b/static/js/lib/api.js
-@@ -4,7 +4,6 @@
- import 'isomorphic-fetch';
- import R from 'ramda';
- import Decimal from 'decimal.js-light';
--
- import type { Profile, ProfileGetResult, ProfilePatchResult } from '../flow/profileTypes';
- import type { CheckoutResponse } from '../flow/checkoutTypes';
- import type { Coupons, AttachCouponResponse } from '../flow/couponTypes';
-@@ -12,6 +11,12 @@ import type { Dashboard, CoursePrices } from '../flow/dashboardTypes';
+@@ -12,6 +12,12 @@ import type { Dashboard, CoursePrices } from '../flow/dashboardTypes';
  import type { AvailableProgram, AvailablePrograms } from '../flow/enrollmentTypes';
  import type { EmailSendResponse } from '../flow/emailTypes';
  import type { PearsonSSOParameters } from '../flow/pearsonTypes';
@@ -23,12 +15,12 @@ index 15b3b51c..fd073740 100644
  
  export function getCookie(name: string): string|null {
    let cookieValue = null;
-@@ -158,15 +163,21 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
+@@ -158,15 +164,22 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
  }
  
- export function getDashboard(): Promise<Dashboard> {
--  return fetchJSONWithCSRF('/api/v0/dashboard/', {}, true);
-+  // return fetchJSONWithCSRF('/api/v0/dashboard/', {}, true);
+ export function getDashboard(username: string): Promise<Dashboard> {
+-  return fetchJSONWithCSRF(`/api/v0/dashboard/${username}/`, {}, true);
++  // return fetchJSONWithCSRF(`/api/v0/dashboard/${username}/`, {}, true);
 +  return Promise.resolve(DASHBOARD_RESPONSE);
  }
  
@@ -44,6 +36,7 @@ index 15b3b51c..fd073740 100644
 +  //     course_id: courseId
 +  //   })
 +  // });
++
 +  return new Promise(resolve => {
 +    setTimeout(() => {
 +      resolve();
@@ -51,7 +44,7 @@ index 15b3b51c..fd073740 100644
    });
  }
  
-@@ -192,7 +203,8 @@ export function sendCourseTeamMail(subject: string, body: string, courseId: numb
+@@ -192,7 +205,8 @@ export function sendCourseTeamMail(subject: string, body: string, courseId: numb
  }
  
  export function getPrograms(): Promise<AvailablePrograms> {
@@ -61,7 +54,7 @@ index 15b3b51c..fd073740 100644
  }
  
  export function addProgramEnrollment(programId: number): Promise<AvailableProgram> {
-@@ -222,28 +234,34 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
+@@ -222,21 +236,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
  }
  
  export function addFinancialAid(income: number, currency: string, programId: number): Promise<*> {
@@ -98,18 +91,6 @@ index 15b3b51c..fd073740 100644
  }
  
  export function skipFinancialAid(programId: number): Promise<*> {
--  return fetchJSONWithCSRF(`/api/v0/financial_aid_skip/${programId}/`, {
--    method: 'PATCH',
--  });
-+  // return fetchJSONWithCSRF(`/api/v0/financial_aid_skip/${programId}/`, {
-+  //   method: 'PATCH',
-+  // });
-+  return Promise.reject();
- }
-+
- export function updateDocumentSentDate(financialAidId: number, sentDate: string): Promise<*> {
-   return fetchJSONWithCSRF(`/api/v0/financial_aid/${financialAidId}/`, {
-     method: 'PATCH',
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
 index bc07de17..aad149d3 100644
 --- a/static/js/test_constants.js
