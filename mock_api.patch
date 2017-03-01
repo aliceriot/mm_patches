@@ -92,7 +92,7 @@ index d8d6b93c..de0ca300 100644
  
  export function skipFinancialAid(programId: number): Promise<*> {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index bc07de17..aad149d3 100644
+index bc07de17..b90969e7 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
 @@ -636,7 +636,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
@@ -100,7 +100,7 @@ index bc07de17..aad149d3 100644
      "title": "Last program",
      "description": "The last program",
 -    "pearson_exam_status": "",
-+    "pearson_exam_status": "in-progress",
++    "pearson_exam_status": "schedulable",
      "courses": [
        {
          "id": 13,
