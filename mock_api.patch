@@ -1,5 +1,5 @@
 diff --git a/static/js/lib/api.js b/static/js/lib/api.js
-index d8d6b93c..de0ca300 100644
+index 05fc7797..b910f0e3 100644
 --- a/static/js/lib/api.js
 +++ b/static/js/lib/api.js
 @@ -12,6 +12,12 @@ import type { Dashboard, CoursePrices } from '../flow/dashboardTypes';
@@ -15,7 +15,7 @@ index d8d6b93c..de0ca300 100644
  
  export function getCookie(name: string): string|null {
    let cookieValue = null;
-@@ -158,15 +164,22 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
+@@ -159,15 +165,22 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
  }
  
  export function getDashboard(username: string): Promise<Dashboard> {
@@ -44,7 +44,7 @@ index d8d6b93c..de0ca300 100644
    });
  }
  
-@@ -192,7 +205,8 @@ export function sendCourseTeamMail(subject: string, body: string, courseId: numb
+@@ -203,7 +216,8 @@ export function sendLearnerMail(subject: string, body: string, studentId: number
  }
  
  export function getPrograms(): Promise<AvailablePrograms> {
@@ -54,7 +54,7 @@ index d8d6b93c..de0ca300 100644
  }
  
  export function addProgramEnrollment(programId: number): Promise<AvailableProgram> {
-@@ -222,21 +236,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
+@@ -233,21 +247,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
  }
  
  export function addFinancialAid(income: number, currency: string, programId: number): Promise<*> {
@@ -92,10 +92,10 @@ index d8d6b93c..de0ca300 100644
  
  export function skipFinancialAid(programId: number): Promise<*> {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index bc07de17..b90969e7 100644
+index 7618fedc..53788f0d 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
-@@ -636,7 +636,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
+@@ -639,12 +639,13 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
    {
      "title": "Last program",
      "description": "The last program",
@@ -104,7 +104,13 @@ index bc07de17..b90969e7 100644
      "courses": [
        {
          "id": 13,
-@@ -658,8 +658,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
+         "position_in_program": 0,
+         "title": "Course for last program in progress - no grade, action or description",
++        "can_schedule_exam": "true",
+         "runs": [
+           {
+             "course_id": "course-v1:edX+DemoX+Demo_Course2",
+@@ -661,8 +662,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
          "prerequisites": ""
        },
      ],
