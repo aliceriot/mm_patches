@@ -1,5 +1,5 @@
 diff --git a/static/js/lib/api.js b/static/js/lib/api.js
-index 05fc7797..b910f0e3 100644
+index 7973504e..a76dcdbf 100644
 --- a/static/js/lib/api.js
 +++ b/static/js/lib/api.js
 @@ -12,6 +12,12 @@ import type { Dashboard, CoursePrices } from '../flow/dashboardTypes';
@@ -44,7 +44,7 @@ index 05fc7797..b910f0e3 100644
    });
  }
  
-@@ -203,7 +216,8 @@ export function sendLearnerMail(subject: string, body: string, studentId: number
+@@ -206,7 +219,8 @@ export function sendLearnerMail(subject: string, body: string, studentId: number
  }
  
  export function getPrograms(): Promise<AvailablePrograms> {
@@ -54,7 +54,7 @@ index 05fc7797..b910f0e3 100644
  }
  
  export function addProgramEnrollment(programId: number): Promise<AvailableProgram> {
-@@ -233,21 +247,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
+@@ -236,21 +250,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
  }
  
  export function addFinancialAid(income: number, currency: string, programId: number): Promise<*> {
@@ -92,15 +92,16 @@ index 05fc7797..b910f0e3 100644
  
  export function skipFinancialAid(programId: number): Promise<*> {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index 7618fedc..53788f0d 100644
+index 7618fedc..b0affbab 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
-@@ -639,12 +639,13 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
+@@ -639,12 +639,14 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
    {
      "title": "Last program",
      "description": "The last program",
 -    "pearson_exam_status": "",
 +    "pearson_exam_status": "schedulable",
++    "grade_average": 98,
      "courses": [
        {
          "id": 13,
@@ -110,7 +111,7 @@ index 7618fedc..53788f0d 100644
          "runs": [
            {
              "course_id": "course-v1:edX+DemoX+Demo_Course2",
-@@ -661,8 +662,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
+@@ -661,8 +663,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
          "prerequisites": ""
        },
      ],
