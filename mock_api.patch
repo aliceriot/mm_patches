@@ -92,37 +92,37 @@ index 7973504e..a76dcdbf 100644
  
  export function skipFinancialAid(programId: number): Promise<*> {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index 7618fedc..b0affbab 100644
+index 2723af94..69e258e1 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
-@@ -639,12 +639,14 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
-   {
-     "title": "Last program",
-     "description": "The last program",
--    "pearson_exam_status": "",
-+    "pearson_exam_status": "schedulable",
-+    "grade_average": 98,
-     "courses": [
-       {
-         "id": 13,
-         "position_in_program": 0,
-         "title": "Course for last program in progress - no grade, action or description",
-+        "can_schedule_exam": "true",
-         "runs": [
-           {
-             "course_id": "course-v1:edX+DemoX+Demo_Course2",
-@@ -661,8 +663,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze([
-         "prerequisites": ""
-       },
-     ],
--    "financial_aid_availability": false,
--    "id": 6
-+    "financial_aid_availability": true,
-+    "id": 6,
-+    "financial_aid_user_info": {
-+      "max_possible_cost": 1000,
-+      "min_possible_cost": 1000,
-+    }
-   },
-   {
-     "title": "Paid but not enrolled",
+@@ -641,12 +641,14 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+     {
+       "title": "Last program",
+       "description": "The last program",
+-      "pearson_exam_status": "",
++      "pearson_exam_status": "schedulable",
++      "grade_average": 98,
+       "courses": [
+         {
+           "id": 13,
+           "position_in_program": 0,
+           "title": "Course for last program in progress - no grade, action or description",
++          "can_schedule_exam": true,
+           "runs": [
+             {
+               "course_id": "course-v1:edX+DemoX+Demo_Course2",
+@@ -663,8 +665,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+           "prerequisites": ""
+         },
+       ],
+-      "financial_aid_availability": false,
+-      "id": 6
++      "financial_aid_availability": true,
++      "id": 6,
++      "financial_aid_user_info": {
++        "max_possible_cost": 1000,
++        "min_possible_cost": 200,
++      }
+     },
+     {
+       "title": "Paid but not enrolled",
