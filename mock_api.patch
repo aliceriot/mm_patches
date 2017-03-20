@@ -92,7 +92,7 @@ index 7973504e..a76dcdbf 100644
  
  export function skipFinancialAid(programId: number): Promise<*> {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index 2723af94..69e258e1 100644
+index 2723af94..09f2730b 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
 @@ -641,12 +641,14 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
@@ -126,3 +126,12 @@ index 2723af94..69e258e1 100644
      },
      {
        "title": "Paid but not enrolled",
+@@ -688,7 +694,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+           "status": STATUS_PAID_BUT_NOT_ENROLLED
+         }]
+       }],
+-      "financial_aid_availability": true,
++      "financial_aid_availability": false,
+       "id": 7
+     },
+   ]
