@@ -92,10 +92,10 @@ index 7973504e..a76dcdbf 100644
  
  export function skipFinancialAid(programId: number): Promise<*> {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index 2723af94..09f2730b 100644
+index 04032806..42ce89c3 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
-@@ -641,12 +641,14 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+@@ -642,12 +642,14 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
      {
        "title": "Last program",
        "description": "The last program",
@@ -111,8 +111,17 @@ index 2723af94..09f2730b 100644
            "runs": [
              {
                "course_id": "course-v1:edX+DemoX+Demo_Course2",
-@@ -663,8 +665,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
-           "prerequisites": ""
+@@ -658,14 +660,20 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+               "course_start_date": "2016-01-01",
+               "fuzzy_start_date": "Fall 2017",
+               "course_end_date": "2016-09-09T10:20:10Z",
++              "has_paid": true,
+             }
+           ],
+           "description": "Course for Last program",
+-          "prerequisites": ""
++          "prerequisites": "",
++          "has_contact_email": true,
          },
        ],
 -      "financial_aid_availability": false,
@@ -126,7 +135,7 @@ index 2723af94..09f2730b 100644
      },
      {
        "title": "Paid but not enrolled",
-@@ -688,7 +694,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+@@ -689,7 +697,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
            "status": STATUS_PAID_BUT_NOT_ENROLLED
          }]
        }],
