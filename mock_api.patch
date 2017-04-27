@@ -1,21 +1,21 @@
 diff --git a/static/js/lib/api.js b/static/js/lib/api.js
-index 7973504e..a76dcdbf 100644
+index d07f1b67..c3ece2aa 100644
 --- a/static/js/lib/api.js
 +++ b/static/js/lib/api.js
-@@ -12,6 +12,12 @@ import type { Dashboard, CoursePrices } from '../flow/dashboardTypes';
- import type { AvailableProgram, AvailablePrograms } from '../flow/enrollmentTypes';
+@@ -13,6 +13,12 @@ import type { AvailableProgram, AvailablePrograms } from '../flow/enrollmentType
  import type { EmailSendResponse } from '../flow/emailTypes';
  import type { PearsonSSOParameters } from '../flow/pearsonTypes';
+ import { S, parseJSON, filterE } from './sanctuary';
 +import {
 +  DASHBOARD_RESPONSE,
 +  PROGRAMS,
 +  COURSE_PRICES_RESPONSE,
 +  USER_PROGRAM_RESPONSE,
-+} from '../test_constants';
++} from '../test_constants.js';
  
  export function getCookie(name: string): string|null {
    let cookieValue = null;
-@@ -159,15 +165,22 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
+@@ -156,15 +162,22 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
  }
  
  export function getDashboard(username: string): Promise<Dashboard> {
@@ -44,7 +44,7 @@ index 7973504e..a76dcdbf 100644
    });
  }
  
-@@ -206,7 +219,8 @@ export function sendLearnerMail(subject: string, body: string, studentId: number
+@@ -203,7 +216,8 @@ export function sendLearnerMail(subject: string, body: string, studentId: number
  }
  
  export function getPrograms(): Promise<AvailablePrograms> {
@@ -54,7 +54,7 @@ index 7973504e..a76dcdbf 100644
  }
  
  export function addProgramEnrollment(programId: number): Promise<AvailableProgram> {
-@@ -236,21 +250,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
+@@ -233,21 +247,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
  }
  
  export function addFinancialAid(income: number, currency: string, programId: number): Promise<*> {
@@ -78,12 +78,12 @@ index 7973504e..a76dcdbf 100644
    });
  }
  
- export function getCoursePrices(): Promise<CoursePrices> {
--  return fetchJSONWithCSRF('/api/v0/course_prices/', {}).then(coursePrices => {
+ export function getCoursePrices(username: string): Promise<CoursePrices> {
+-  return fetchJSONWithCSRF(`/api/v0/course_prices/${username}/`).then(coursePrices => {
 -    // turn `price` from string into decimal
 -    return R.map(R.evolve({price: Decimal}), coursePrices);
 -  });
-+  // return fetchJSONWithCSRF('/api/v0/course_prices/', {}).then(coursePrices => {
++  // return fetchJSONWithCSRF(`/api/v0/course_prices/${username}/`).then(coursePrices => {
 +  //   // turn `price` from string into decimal
 +  //   return R.map(R.evolve({price: Decimal}), coursePrices);
 +  // });
@@ -92,36 +92,11 @@ index 7973504e..a76dcdbf 100644
  
  export function skipFinancialAid(programId: number): Promise<*> {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index 04032806..42ce89c3 100644
+index 3041961a..ce3096ce 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
-@@ -642,12 +642,14 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
-     {
-       "title": "Last program",
-       "description": "The last program",
--      "pearson_exam_status": "",
-+      "pearson_exam_status": "schedulable",
-+      "grade_average": 98,
-       "courses": [
-         {
-           "id": 13,
-           "position_in_program": 0,
-           "title": "Course for last program in progress - no grade, action or description",
-+          "can_schedule_exam": true,
-           "runs": [
-             {
-               "course_id": "course-v1:edX+DemoX+Demo_Course2",
-@@ -658,14 +660,20 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
-               "course_start_date": "2016-01-01",
-               "fuzzy_start_date": "Fall 2017",
-               "course_end_date": "2016-09-09T10:20:10Z",
-+              "has_paid": true,
-             }
-           ],
-           "description": "Course for Last program",
--          "prerequisites": ""
-+          "prerequisites": "",
-+          "has_contact_email": true,
+@@ -905,8 +905,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+           "prerequisites": ""
          },
        ],
 -      "financial_aid_availability": false,
@@ -135,7 +110,7 @@ index 04032806..42ce89c3 100644
      },
      {
        "title": "Paid but not enrolled",
-@@ -689,7 +697,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+@@ -930,7 +934,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
            "status": STATUS_PAID_BUT_NOT_ENROLLED
          }]
        }],
