@@ -92,10 +92,43 @@ index d07f1b67..c3ece2aa 100644
  
  export function skipFinancialAid(programId: number): Promise<*> {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index 3041961a..ce3096ce 100644
+index 32f13def..303f8183 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
-@@ -905,8 +905,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+@@ -878,6 +878,32 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+       "title": "Empty program",
+       "description": "The empty program",
+       "courses": [
++        {
++          "id": 7,
++          "title": "Analog Learning 300",
++          "position_in_program": 3,
++          "description": "The most advancedest course in Analog Learning",
++          "prerequisites": null,
++          "has_contact_email": false,
++          "can_schedule_exam": false,
++          "runs": [
++            {
++              "id": 17,
++              "course_id": "course-v1:MITx+Analog+Learning+300+May_2017",
++              "title": "Analog Learning 300 - May 2017",
++              "status": "missed-deadline",
++              "has_paid": false,
++              "position": 1,
++              "course_start_date": "2017-05-26T19:02:58.397934Z",
++              "course_end_date": null,
++              "fuzzy_start_date": null,
++              "enrollment_url": null,
++              "current_grade": null
++            }
++          ],
++          "proctorate_exams_grades": [],
++          "has_exam": false
++        }
+       ],
+       "id": 2
+     },
+@@ -906,8 +932,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
            "prerequisites": ""
          },
        ],
@@ -110,7 +143,7 @@ index 3041961a..ce3096ce 100644
      },
      {
        "title": "Paid but not enrolled",
-@@ -930,7 +934,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+@@ -931,7 +961,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
            "status": STATUS_PAID_BUT_NOT_ENROLLED
          }]
        }],
