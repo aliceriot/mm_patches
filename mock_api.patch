@@ -1,5 +1,5 @@
 diff --git a/static/js/lib/api.js b/static/js/lib/api.js
-index d07f1b67..c3ece2aa 100644
+index 87093d89..f152cb68 100644
 --- a/static/js/lib/api.js
 +++ b/static/js/lib/api.js
 @@ -13,6 +13,12 @@ import type { AvailableProgram, AvailablePrograms } from '../flow/enrollmentType
@@ -15,7 +15,7 @@ index d07f1b67..c3ece2aa 100644
  
  export function getCookie(name: string): string|null {
    let cookieValue = null;
-@@ -156,15 +162,22 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
+@@ -154,15 +160,22 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
  }
  
  export function getDashboard(username: string): Promise<Dashboard> {
@@ -44,7 +44,7 @@ index d07f1b67..c3ece2aa 100644
    });
  }
  
-@@ -203,7 +216,8 @@ export function sendLearnerMail(subject: string, body: string, studentId: number
+@@ -201,7 +214,8 @@ export function sendLearnerMail(subject: string, body: string, studentId: number
  }
  
  export function getPrograms(): Promise<AvailablePrograms> {
@@ -54,7 +54,7 @@ index d07f1b67..c3ece2aa 100644
  }
  
  export function addProgramEnrollment(programId: number): Promise<AvailableProgram> {
-@@ -233,21 +247,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
+@@ -231,21 +245,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
  }
  
  export function addFinancialAid(income: number, currency: string, programId: number): Promise<*> {
@@ -92,10 +92,18 @@ index d07f1b67..c3ece2aa 100644
  
  export function skipFinancialAid(programId: number): Promise<*> {
 diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index 32f13def..303f8183 100644
+index ef711daa..70c51248 100644
 --- a/static/js/test_constants.js
 +++ b/static/js/test_constants.js
-@@ -878,6 +878,32 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+@@ -757,6 +757,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+               "course_start_date": "2015-08-22T11:48:27Z",
+               "fuzzy_start_date": "Fall 2015",
+               "course_end_date": "2015-09-09T10:20:10Z",
++              "has_paid": true,
+             },
+             {
+               "certificate_url": "www.google.com",
+@@ -878,6 +879,32 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
        "title": "Empty program",
        "description": "The empty program",
        "courses": [
@@ -128,7 +136,7 @@ index 32f13def..303f8183 100644
        ],
        "id": 2
      },
-@@ -906,8 +932,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+@@ -906,8 +933,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
            "prerequisites": ""
          },
        ],
@@ -143,7 +151,7 @@ index 32f13def..303f8183 100644
      },
      {
        "title": "Paid but not enrolled",
-@@ -931,7 +961,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
+@@ -931,7 +962,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
            "status": STATUS_PAID_BUT_NOT_ENROLLED
          }]
        }],
