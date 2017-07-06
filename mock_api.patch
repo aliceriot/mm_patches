@@ -1,11 +1,11 @@
 diff --git a/static/js/lib/api.js b/static/js/lib/api.js
-index 87093d89..f152cb68 100644
+index 99f26605..04c435c5 100644
 --- a/static/js/lib/api.js
 +++ b/static/js/lib/api.js
-@@ -13,6 +13,12 @@ import type { AvailableProgram, AvailablePrograms } from '../flow/enrollmentType
+@@ -12,6 +12,12 @@ import type { AvailableProgram, AvailablePrograms } from '../flow/enrollmentType
  import type { EmailSendResponse } from '../flow/emailTypes';
  import type { PearsonSSOParameters } from '../flow/pearsonTypes';
- import { S, parseJSON, filterE } from './sanctuary';
+ import { fetchWithCSRF, fetchJSONWithCSRF } from 'redux-hammock/django_csrf_fetch';
 +import {
 +  DASHBOARD_RESPONSE,
 +  PROGRAMS,
@@ -13,14 +13,26 @@ index 87093d89..f152cb68 100644
 +  USER_PROGRAM_RESPONSE,
 +} from '../test_constants.js';
  
- export function getCookie(name: string): string|null {
-   let cookieValue = null;
-@@ -154,15 +160,22 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
+ const loginOnEdXError = (response: Response) => {
+   if (response.errorStatusCode === 400 || response.errorStatusCode === 401) {
+@@ -37,21 +43,27 @@ export function patchUserProfile(username: string, profile: Profile): Promise<Pr
  }
  
- export function getDashboard(username: string): Promise<Dashboard> {
--  return fetchJSONWithCSRF(`/api/v0/dashboard/${username}/`, {}, true);
-+  // return fetchJSONWithCSRF(`/api/v0/dashboard/${username}/`, {}, true);
+ export async function getDashboard(username: string): Promise<Dashboard> {
+-  try {
+-    let response = await fetchJSONWithCSRF(`/api/v0/dashboard/${username}/`);
+-    return response;
+-  } catch (response) {
+-    loginOnEdXError(response);
+-    return response;
+-  }
++  // try {
++  //   let response = await fetchJSONWithCSRF(`/api/v0/dashboard/${username}/`);
++  //   return response;
++  // } catch (response) {
++  //   loginOnEdXError(response);
++  //   return response;
++  // }
 +  return Promise.resolve(DASHBOARD_RESPONSE);
  }
  
@@ -36,7 +48,6 @@ index 87093d89..f152cb68 100644
 +  //     course_id: courseId
 +  //   })
 +  // });
-+
 +  return new Promise(resolve => {
 +    setTimeout(() => {
 +      resolve();
@@ -44,17 +55,29 @@ index 87093d89..f152cb68 100644
    });
  }
  
-@@ -201,7 +214,8 @@ export function sendLearnerMail(subject: string, body: string, studentId: number
+@@ -90,13 +102,14 @@ export function sendLearnerMail(subject: string, body: string, studentId: number
  }
  
- export function getPrograms(): Promise<AvailablePrograms> {
--  return fetchJSONWithCSRF('/api/v0/programs/', {}, true);
-+  // return fetchJSONWithCSRF('/api/v0/programs/', {}, true);
+ export async function getPrograms(): Promise<AvailablePrograms> {
+-  try {
+-    let response = await fetchJSONWithCSRF('/api/v0/programs/');
+-    return response;
+-  } catch (response) {
+-    loginOnEdXError(response);
+-    return response;
+-  }
++  // try {
++  //   let response = await fetchJSONWithCSRF('/api/v0/programs/');
++  //   return response;
++  // } catch (response) {
++  //   loginOnEdXError(response);
++  //   return response;
++  // }
 +  return Promise.resolve(PROGRAMS);
  }
  
  export function addProgramEnrollment(programId: number): Promise<AvailableProgram> {
-@@ -231,21 +245,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
+@@ -126,21 +139,25 @@ export function getPearsonSSO(): Promise<PearsonSSOParameters> {
  }
  
  export function addFinancialAid(income: number, currency: string, programId: number): Promise<*> {
@@ -84,79 +107,10 @@ index 87093d89..f152cb68 100644
 -    return R.map(R.evolve({price: Decimal}), coursePrices);
 -  });
 +  // return fetchJSONWithCSRF(`/api/v0/course_prices/${username}/`).then(coursePrices => {
-+  //   // turn `price` from string into decimal
-+  //   return R.map(R.evolve({price: Decimal}), coursePrices);
++    // // turn `price` from string into decimal
++    // return R.map(R.evolve({price: Decimal}), coursePrices);
 +  // });
 +  return Promise.resolve(COURSE_PRICES_RESPONSE);
  }
  
  export function skipFinancialAid(programId: number): Promise<*> {
-diff --git a/static/js/test_constants.js b/static/js/test_constants.js
-index ef711daa..70c51248 100644
---- a/static/js/test_constants.js
-+++ b/static/js/test_constants.js
-@@ -757,6 +757,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
-               "course_start_date": "2015-08-22T11:48:27Z",
-               "fuzzy_start_date": "Fall 2015",
-               "course_end_date": "2015-09-09T10:20:10Z",
-+              "has_paid": true,
-             },
-             {
-               "certificate_url": "www.google.com",
-@@ -878,6 +879,32 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
-       "title": "Empty program",
-       "description": "The empty program",
-       "courses": [
-+        {
-+          "id": 7,
-+          "title": "Analog Learning 300",
-+          "position_in_program": 3,
-+          "description": "The most advancedest course in Analog Learning",
-+          "prerequisites": null,
-+          "has_contact_email": false,
-+          "can_schedule_exam": false,
-+          "runs": [
-+            {
-+              "id": 17,
-+              "course_id": "course-v1:MITx+Analog+Learning+300+May_2017",
-+              "title": "Analog Learning 300 - May 2017",
-+              "status": "missed-deadline",
-+              "has_paid": false,
-+              "position": 1,
-+              "course_start_date": "2017-05-26T19:02:58.397934Z",
-+              "course_end_date": null,
-+              "fuzzy_start_date": null,
-+              "enrollment_url": null,
-+              "current_grade": null
-+            }
-+          ],
-+          "proctorate_exams_grades": [],
-+          "has_exam": false
-+        }
-       ],
-       "id": 2
-     },
-@@ -906,8 +933,12 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
-           "prerequisites": ""
-         },
-       ],
--      "financial_aid_availability": false,
--      "id": 6
-+      "financial_aid_availability": true,
-+      "id": 6,
-+      "financial_aid_user_info": {
-+        "max_possible_cost": 1000,
-+        "min_possible_cost": 200,
-+      }
-     },
-     {
-       "title": "Paid but not enrolled",
-@@ -931,7 +962,7 @@ export const DASHBOARD_RESPONSE: Dashboard = deepFreeze({
-           "status": STATUS_PAID_BUT_NOT_ENROLLED
-         }]
-       }],
--      "financial_aid_availability": true,
-+      "financial_aid_availability": false,
-       "id": 7
-     },
-   ]
